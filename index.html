@@ -32,6 +32,18 @@
     z-index: 0;
   }
 
+  .glow {
+    position: fixed;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(180, 120, 60, 0.12), transparent 70%);
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    transition: 0.15s ease-out;
+    z-index: 0;
+  }
+
   .card {
     position: relative;
     z-index: 1;
@@ -69,6 +81,12 @@
     border: 2px solid #5a4632;
     box-shadow: 0 0 24px rgba(160, 110, 50, 0.25);
     filter: sepia(0.3) contrast(1.05);
+    transition: 0.4s;
+  }
+
+  .avatar:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 36px rgba(200, 150, 70, 0.4);
   }
 
   .name {
@@ -94,6 +112,7 @@
     color: #8f8068;
     margin-bottom: 28px;
     letter-spacing: 1px;
+    min-height: 54px;
   }
 
   .info {
@@ -111,14 +130,40 @@
     border-left: 2px solid #4a3a28;
     font-size: 14px;
     letter-spacing: 1px;
+    transition: 0.3s;
   }
 
-  .row .label {
-    color: #6f6048;
+  .row:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-left-color: #8a6a40;
   }
 
-  .row .value {
-    color: #c9b99a;
+  .row .label { color: #6f6048; }
+  .row .value { color: #c9b99a; }
+
+  .links {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 28px;
+    flex-wrap: wrap;
+  }
+
+  .links a {
+    color: #8f8068;
+    text-decoration: none;
+    font-size: 13px;
+    letter-spacing: 1px;
+    padding: 6px 12px;
+    border: 1px solid #3a2e24;
+    border-radius: 2px;
+    transition: 0.3s;
+  }
+
+  .links a:hover {
+    color: #d8c49a;
+    border-color: #8a6a40;
+    background: rgba(180, 140, 80, 0.06);
   }
 
   .footer {
@@ -128,23 +173,30 @@
     color: #4a4034;
     letter-spacing: 2px;
   }
+
+  .counter {
+    margin-top: 10px;
+    text-align: center;
+    font-size: 11px;
+    color: #4a4034;
+    letter-spacing: 1px;
+  }
 </style>
 </head>
 <body>
 
+  <div class="glow" id="glow"></div>
+
   <div class="card">
 
     <div class="avatar-wrap">
-      <img class="avatar" src="https://yhsome.github.io/avatar.jpg" alt="头像">
+      <img class="avatar" src="avatar.jpg" alt="头像">
     </div>
 
-    <h1 class="name">你的名字</h1>
+    <h1 class="name">零碎</h1>
     <div class="divider"></div>
 
-    <p class="bio">
-      这里写个人简介。<br>
-      一两句话，说明你是谁、在做什么。
-    </p>
+    <p class="bio" id="bio"></p>
 
     <div class="info">
       <div class="row">
@@ -157,13 +209,50 @@
       </div>
       <div class="row">
         <span class="label">IP地址</span>
-        <span class="value">127.0.0.1</span>
+        <span class="value">英国·伦敦</span>
       </div>
     </div>
 
+    <div class="links">
+      <a href="#">微信</a>
+      <a href="#">QQ</a>
+      <a href="#">B站</a>
+      <a href="#">微博</a>
+    </div>
+
     <div class="footer">EST. 2026</div>
+    <div class="counter">访问次数：<span id="count">0</span></div>
 
   </div>
 
+<script>
+  // 鼠标光晕
+  const glow = document.getElementById('glow');
+  document.addEventListener('mousemove', e => {
+    glow.style.left = e.clientX + 'px';
+    glow.style.top = e.clientY + 'px';
+  });
+
+  // 打字机简介
+  const text = "在幸福里折个角。";
+  const bio = document.getElementById('bio');
+  let i = 0;
+  function type() {
+    if (i < text.length) {
+      bio.textContent += text.charAt(i);
+      i++;
+      setTimeout(type, 80);
+    }
+  }
+  type();
+
+  // 访客计数（本地存储，仅自己可见）
+  let count = localStorage.getItem('visits') || 0;
+  count++;
+  localStorage.setItem('visits', count);
+  document.getElementById('count').textContent = count;
+</script>
+
 </body>
 </html>
+
