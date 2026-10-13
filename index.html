@@ -181,16 +181,40 @@
     color: #4a4034;
     letter-spacing: 1px;
   }
+
+  #musicBtn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: rgba(20, 16, 14, 0.9);
+    color: #c9b99a;
+    border: 1px solid #5a4632;
+    border-radius: 4px;
+    padding: 8px 14px;
+    font-size: 13px;
+    letter-spacing: 1px;
+    cursor: pointer;
+    z-index: 99;
+    font-family: inherit;
+    transition: 0.3s;
+  }
+
+  #musicBtn:hover {
+    border-color: #8a6a40;
+    color: #d8c49a;
+  }
 </style>
 </head>
 <body>
 
   <div class="glow" id="glow"></div>
 
+  <button id="musicBtn" onclick="toggleMusic()">▶ 播放音乐</button>
+
   <div class="card">
 
     <div class="avatar-wrap">
-      <img class="avatar" src="avatar.jpg" alt="头像">
+      <img class="avatar" src="avatar.jpg.jpg" alt="头像">
     </div>
 
     <h1 class="name">零碎</h1>
@@ -225,15 +249,15 @@
 
   </div>
 
+  <audio id="bgm" src="music.mp3" loop></audio>
+
 <script>
-  // 鼠标光晕
   const glow = document.getElementById('glow');
   document.addEventListener('mousemove', e => {
     glow.style.left = e.clientX + 'px';
     glow.style.top = e.clientY + 'px';
   });
 
-  // 打字机简介
   const text = "在幸福里折个角。";
   const bio = document.getElementById('bio');
   let i = 0;
@@ -246,13 +270,23 @@
   }
   type();
 
-  // 访客计数（本地存储，仅自己可见）
   let count = localStorage.getItem('visits') || 0;
   count++;
   localStorage.setItem('visits', count);
   document.getElementById('count').textContent = count;
+
+  function toggleMusic() {
+    var bgm = document.getElementById('bgm');
+    var btn = document.getElementById('musicBtn');
+    if (bgm.paused) {
+      bgm.play();
+      btn.textContent = '⏸ 暂停音乐';
+    } else {
+      bgm.pause();
+      btn.textContent = '▶ 播放音乐';
+    }
+  }
 </script>
 
 </body>
 </html>
-
